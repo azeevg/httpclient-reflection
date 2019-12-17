@@ -8,12 +8,17 @@ public class ReflectionUtils {
 
     @Getter
     @Setter
-    @AllArgsConstructor
     @ToString
     static class HttpInter {
         private int code;
         private String host;
+
+        public HttpInter(int code, String host) {
+            this.code = code;
+            this.host = host;
+        }
     }
+
 
     public static FieldWrapper getField(Object object) {
         return new FieldWrapper(object);
