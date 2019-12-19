@@ -16,7 +16,7 @@ public class JerseyClientTest {
         Client httpClient = new JerseyClientDecorator(clientConfig);
 
         WebResource.Builder resource = httpClient.resource("https://www.googleapis.com/customsearch/v1")
-                .queryParam("key", "AIzaSyBFTBoIacdRzw8h5aEgqRrZm2-rAQdANyQ")
+                .queryParam("key", System.getenv("GOOGLE_SEARCH_API_KEY"))
                 .queryParam("cx", "017576662512468239146:omuauf_lfve")
                 .queryParam("q", "lectures")
                 .type(MediaType.TEXT_HTML_TYPE);
