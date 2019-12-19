@@ -11,8 +11,9 @@ public class LegacyHttpClientTest {
         GetMethod method = new GetMethod("https://yandex.ru");
         client.executeMethod(method);
         byte[] responseBody = method.getResponseBody();
-        ReflectionUtils.HttpInter res = ReflectionUtils.getRes(method);
-        System.out.println(res);
+//        ReflectionUtils.HttpInter res = ReflectionUtils.getRes(method);
+//        System.out.println(res);
+        System.out.println(method.getQueryString());
         method.releaseConnection();
     }
 }
