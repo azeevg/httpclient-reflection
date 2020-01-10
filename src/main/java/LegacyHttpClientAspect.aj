@@ -1,16 +1,14 @@
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.*;
 
 public aspect LegacyHttpClientAspect {
-    pointcut executeHttpMethod(HttpMethod request, HttpClient client):
-            call(int HttpClient.doExecute(HttpMethod)) && args(request) && target(client);
+    pointcut executeHttpMethodA(HttpMethod request, HttpClient client):
+            (call(int HttpClient.executeMethod(HttpMethod)) && args(request) && target(client));
+    pointcut executeHttpMethodB(HostConfiguration hostconfig, HttpMethod request, HttpClient client):
+            (call(int HttpClient.executeMethod(HostConfiguration, HttpMethod)) && args(hostconfig, request) && target(client));
+    pointcut executeHttpMethodC(HostConfiguration hostconfig, HttpMethod request, HttpState state, HttpClient client):
+            (call(int HttpClient.executeMethod(HostConfiguration, HttpMethod, HttpState)) && args(hostconfig, request, state) && target(client));
 
-    int around(HttpMethod request, HttpClient client):
-            executeHttpMethod(request, client) {
-        long start = System.currentTimeMillis();
-        int statusCode = proceed(request, client);
+    private int handle(long start, int code, HttpMethod request) {
         long end = System.currentTimeMillis();
         try {
             URI uri = request.getURI();
@@ -18,12 +16,22 @@ public aspect LegacyHttpClientAspect {
             String path = uri.getPath();
             long time = end - start;
             String method = request.getName();
-            System.out.println(String.format("%s %s %s %s %s", method, host, path, time, statusCode));
+            System.out.println(String.format("%s %s %s %s %s", method, host, path, time, code));
         } catch (URIException e) {
             e.printStackTrace();
         }
+        return code;
+    }
 
+    int around(HttpMethod request, HttpClient client): executeHttpMethodA(request, client) {
+        return handle(System.currentTimeMillis(), proceed(request, client), request);
+    }
 
-        return statusCode;
+    int around(HostConfiguration hostconfig, HttpMethod request, HttpClient client): executeHttpMethodB(hostconfig, request, client) {
+        return handle(System.currentTimeMillis(), proceed(hostconfig, request, client), request);
+    }
+
+    int around(HostConfiguration hostconfig, HttpMethod request, HttpState state, HttpClient client): executeHttpMethodC(hostconfig, request, state, client) {
+        return handle(System.currentTimeMillis(), proceed(hostconfig, request, state, client), request);
     }
 }
