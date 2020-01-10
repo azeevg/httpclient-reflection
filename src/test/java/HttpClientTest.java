@@ -10,13 +10,13 @@ import java.io.IOException;
 public class HttpClientTest {
     @Test
     public void testClosingQuietly() {
-        HttpClient client = HttpClientBuilder.create().build();
+        HttpClient client = new HttpClient4Decorator(HttpClientBuilder.create().build());
 
         try {
-            HttpUriRequest request = RequestBuilder.get().setUri("https://yandex.ru").build();
+            HttpUriRequest request = RequestBuilder.get().setUri("https://yandex.ru/assd").build();
             HttpResponse response = client.execute(request);
-            ReflectionUtils.HttpInter res = ReflectionUtils.getRes(response);
-            System.out.println(res);
+//            ReflectionUtils.HttpInter res = ReflectionUtils.getRes(response);
+//            System.out.println(res);
         } catch (IOException e) {
             e.printStackTrace();
         }
