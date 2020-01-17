@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.function.Function;
 
 public class HttpClientTest {
-    static HttpClient client = HttpClients.createDefault();
+    private static HttpClient client = HttpClients.createDefault();
 
-    public List<StatisticsData> validateSingleRequest(Function<HttpUriRequest, HttpResponse> execute) {
+    private void validateSingleRequest(Function<HttpUriRequest, HttpResponse> execute) {
         ObservableStatisticsLogger logger = new ObservableStatisticsLoggerImpl();
 
         TestStatisticsLogger.setLogger(logger);
@@ -33,7 +33,6 @@ public class HttpClientTest {
         Assert.assertEquals("yandex.ru", statisticsData.getHost());
         Assert.assertEquals("GET", statisticsData.getMethod());
         Assert.assertEquals("/assd", statisticsData.getPathQuery());
-        return stats;
     }
 
     @Test
