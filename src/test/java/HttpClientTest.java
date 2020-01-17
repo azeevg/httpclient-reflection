@@ -29,7 +29,7 @@ public class HttpClientTest {
         Assert.assertEquals(1, stats.size());
         StatisticsData statisticsData = stats.get(0);
 
-        Assert.assertTrue(statisticsData.getCode() > 0);
+        Assert.assertEquals(response.getStatusLine().getStatusCode(), statisticsData.getCode());
         Assert.assertEquals("yandex.ru", statisticsData.getHost());
         Assert.assertEquals("GET", statisticsData.getMethod());
         Assert.assertEquals("/assd", statisticsData.getPathQuery());
@@ -58,7 +58,6 @@ public class HttpClientTest {
     @Test
     public void multipleRequestLoggingTest() {
         ObservableStatisticsLogger statisticsLogger = new ObservableStatisticsLoggerImpl();
-
         TestStatisticsLogger.setLogger(statisticsLogger);
 
         try {

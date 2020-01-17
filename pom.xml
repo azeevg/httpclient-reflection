@@ -52,6 +52,14 @@
                                 <groupId>commons-httpclient</groupId>
                                 <artifactId>commons-httpclient</artifactId>
                             </weaveDependency>
+                            <weaveDependency>
+                                <groupId>org.apache.httpcomponents</groupId>
+                                <artifactId>httpclient</artifactId>
+                            </weaveDependency>
+                            <weaveDependency>
+                                <groupId>com.sun.jersey</groupId>
+                                <artifactId>jersey-client</artifactId>
+                            </weaveDependency>
                         </weaveDependencies>
                     </configuration>
 
