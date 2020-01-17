@@ -1,3 +1,5 @@
+package com.azeevg;
+
 import org.apache.commons.httpclient.*;
 
 public aspect LegacyHttpClientAspect {
@@ -14,9 +16,8 @@ public aspect LegacyHttpClientAspect {
             URI uri = request.getURI();
             String host = uri.getHost();
             String path = uri.getPath();
-            long time = end - start;
             String method = request.getName();
-            System.out.println(String.format("%s %s %s %s %s", method, host, path, time, code));
+            TestStatisticsLogger.getLogger().log(new StatisticsData(host, path, method, code, start, end));
         } catch (URIException e) {
             e.printStackTrace();
         }

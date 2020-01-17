@@ -2,7 +2,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.jersey.api.client.*;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
@@ -10,10 +9,7 @@ import javax.ws.rs.core.MediaType;
 public class JerseyClientTest {
     @Test
     public void checkGetRequest() {
-        ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getClasses().add(JacksonJsonProvider.class);
-
-        Client httpClient = new JerseyClientDecorator(clientConfig);
+        Client httpClient = new Client();
 
         WebResource.Builder resource = httpClient.resource("https://www.googleapis.com/customsearch/v1")
                 .queryParam("key", System.getenv("GOOGLE_SEARCH_API_KEY"))
